@@ -649,8 +649,7 @@ button:hover {
 }
 
 footer {
-	display: block;
-	height: 140px;
+	height: 11rem;
 	text-align: center;
 	line-height: 1rem;
 	font-size: 0.65rem;
@@ -660,4 +659,5 @@ footer {
 	max-width: 100%;
 	color: rgb(110, 149, 167);
 	margin: 2rem 0 0;
+	padding-top: 2rem;
 }
