@@ -649,13 +649,15 @@ button:hover {
 }
 
 footer {
-	height: 120px;
+	display: block;
+	height: 140px;
 	text-align: center;
+	line-height: 1rem;
 	font-size: 0.65rem;
 	font-weight: 200;
 	background-color: rgb(7%, 8%, 11%, 0.5);
 	letter-spacing: 0.15rem;
 	max-width: 100%;
 	color: rgb(110, 149, 167);
-	padding: 2.2rem;
+	margin: 2rem 0 0;
 }
