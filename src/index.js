@@ -79,34 +79,37 @@ function handleSubmit(event) {
 	let city = document.querySelector("#city-input").value;
 	searchCity(city);
 }
-function convertToFahrenheit(event) {
+
+function convertToMetricTemp(event) {
 	event.preventDefault();
+	metricButton.classList.add("active");
+	imperialButton.classList.remove("active");
 	let temperatureElement = document.querySelector("#current-temp");
-	let temperature = temperatureElement.innerHTML;
-	temperature = Number(temperature);
-	temperatureElement.innerHTML = `${Math.round(temperature * (9 / 5) + 32)}°`;
+	temperatureElement.innerHTML = `${Math.round(celsiusTemperatur)}°`;
 }
-function convertToCelsius(event) {
+
+function convertToImperialTemp(event) {
 	event.preventDefault();
-	let temperatureElement = document.querySelector("#current-temp");
-	let temperature = temperatureElement.innerHTML;
-	temperature = Number(temperature);
-	temperatureElement.innerHTML = `${Math.round(
-		(temperature - 32) / (9 / 5)
-	)}°`;
+	let tempElement = document.querySelector("#current-temp");
+	imperialButton.classList.add("active");
+	metricButton.classList.remove("active");
+	let imperialTemp = (celsiusTemperature * 9) / 5 + 32;
+	tempElement.innerHTML = `${Math.round(imperialTemp)}°`;
 }
+
+let celsiusTemperature = null;
+
+let metricButton = document.querySelector(".convertToMetricButton");
+metricButton.addEventListener("click", convertToMetricTemp);
+
+let imperialButton = document.querySelector(".convertToImperialButton");
+imperialButton.addEventListener("click", convertToImperialTemp);
 
 let searchForm = document.querySelector(".searchEngine");
 searchForm.addEventListener("submit", handleSubmit);
-
-let fahrenheitButton = document.querySelector(".fahrenheit");
-fahrenheitButton.addEventListener("click", convertToFahrenheit);
-
-let celsiusButton = document.querySelector(".celsius");
-celsiusButton.addEventListener("click", convertToCelsius);
 
 let currentLocationButton = document.querySelector("#current-location-icon");
 currentLocationButton.addEventListener("click", getGeolocation);
 
 formattedTime();
-searchCity("Stavanger");
+searchCity("London");

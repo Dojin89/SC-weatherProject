@@ -236,11 +236,11 @@ a:hover {
 	top: 0.4rem;
 }
 
-.celsius,
+#celsius,
 #celsius-med-circle {
 	grid-column: 2;
 }
-.celsius {
+#celsius {
 	background: rgba(0, 0, 0, 0.4);
 	grid-column: 1/2;
 	z-index: 1;
@@ -253,12 +253,11 @@ a:hover {
 	top: 1rem;
 	transition: 0.15s ease-out;
 }
-.celsius:hover {
-	width: 3.5rem;
-	height: 3.5rem;
+#celsius:hover {
 	background: rgba(0, 0, 0, 0.6);
+	cursor: pointer;
 }
-.celsius::before {
+#celsius::before {
 	z-index: 3;
 	content: "C";
 	font-size: 0.7rem;
@@ -269,9 +268,7 @@ a:hover {
 	color: grey;
 	transition: 0.15s ease-out;
 }
-.celsius:hover::before {
-	font-size: 1.2rem;
-	cursor: pointer;
+#celsius:hover::before {
 	color: white;
 }
 #celsius-med-circle {
@@ -290,14 +287,10 @@ a:hover {
 #celsius-med-circle:hover {
 	background-color: rgba(255, 255, 255, 0.15);
 	content: "";
-	width: 2.3rem;
-	height: 2.3rem;
 	border-radius: 50%;
 	position: relative;
-	bottom: 0.6rem;
-	left: 0.6rem;
 }
-.fahrenheit {
+#fahrenheit {
 	background: rgba(0, 0, 0, 0.4);
 	grid-column: 2/2;
 	z-index: 1;
@@ -310,12 +303,11 @@ a:hover {
 	top: 1rem;
 	transition: 0.15s ease-out;
 }
-.fahrenheit:hover {
-	width: 3.5rem;
-	height: 3.5rem;
+#fahrenheit:hover {
 	background: rgba(0, 0, 0, 0.6);
+	cursor: pointer;
 }
-.fahrenheit:before {
+#fahrenheit:before {
 	z-index: 3;
 	content: "F";
 	font-size: 0.7rem;
@@ -327,9 +319,8 @@ a:hover {
 	transition: 0.15s ease-out;
 }
 
-.fahrenheit:hover::before {
-	font-size: 1.2rem;
-	cursor: pointer;
+#fahrenheit:hover::before {
+
 	color: white;
 }
 
@@ -349,12 +340,6 @@ a:hover {
 #fahrenheit-med-circle:hover {
 	background-color: rgba(255, 255, 255, 0.15);
 	content: "";
-	width: 2.3rem;
-	height: 2.3rem;
-	border-radius: 50%;
-	position: relative;
-	bottom: 0.6rem;
-	left: 0.6rem;
 }
 
 #now-location,
@@ -661,3 +646,7 @@ footer {
 	margin: 2rem 0 0;
 	padding: 3rem 0;
 }
+
+
+
+

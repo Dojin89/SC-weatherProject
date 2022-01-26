@@ -20,13 +20,14 @@
 			href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap"
 			rel="stylesheet"
 		/>
+
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	</head>
-	<body>
-		<div class="container">
-			<div class="parent1">
-				<div class="pc1-1" id="searchbar">
-					<form class="searchEngine">
+</head>
+<body>
+	<div class="container">
+		<div class="parent1">
+			<div class="pc1-1" id="searchbar">
+				<form class="searchEngine">
 						<input
 							type="text"
 							placeholder="Search..."
@@ -45,9 +46,9 @@
 							id="current-location-icon"
 						></button>
 						<div class="hide">Current location</div>
-					</form>
-				</div>
+				</form>
 			</div>
+		</div>
 
 			<div class="parent2" id="current-conditions">
 				<div class="el1" id="big-circle"></div>
@@ -58,11 +59,14 @@
                     <img src="img/icons/icons.WatherIcons-yr.no/YR-icon-heavy-rain-showers-sun.png"alt="weatherIcon"id="current-icon">
                 </div>
 				<div class="el1" id="current-sky"></div>
+
 				<div class="el2" id="now-location">
 					<span class="el2" id="city"> </span>
 					<span class="el2" id="country"></span>
 				</div>
+
 				<div class="el3" id="timestamp"></div>
+
 				<div class="el4" id="container-current-conditions">
 					<div class="currently">
 						<span id="now-conditions"></span>
@@ -103,7 +107,6 @@
                         <span id="today-pressure-text">xx</span>
                     </div>
 
-
                     <div class="sunrise">
                         <img
 							src="img/icons/icons.WeatherIcons-iconfinder-free/sunrise.png"
@@ -142,60 +145,61 @@
 						<button class="news"></button>
 					</div>
 				</div>
+
 				<div class="containerUnits">
-					<div class="celsius">
-						<div id="celsius-med-circle"></div>
+					<div class="active" id="celsius">
+						<div class="convertToMetricButton" id="celsius-med-circle"></div>
 					</div>
-					<div class="fahrenheit">
-						<div id="fahrenheit-med-circle"></div>
+					<div id="fahrenheit">
+						<div class="convertToImperialButton" id="fahrenheit-med-circle"></div>
 					</div>
 				</div>
-			</div>
 
-			<div class="parent3"></div>
-
-                  <div class="futureWeatherForecast">
-          <ul class="list-group list-group-flush">
-          	  <li class="list-group-item">
-              		Day
-              		<img src="#" alt="weather icon" class="weather-icon" />
-              		<div class="tempMax">10 degrees</div>
-              		<div class="tempMin">5 deg</div>
-            	</li>
-            	<li class="list-group-item">
-              		Day
-              		<img src="#" alt="weather icon" class="weather-icon" />
-              		<div class="tempMax">10 degrees</div>
-              		<div class="tempMin">5 deg</div>
-            	</li>
-            	<li class="list-group-item">
-              		Day
-              		<img src="#" alt="weather icon" class="weather-icon" />
-              		<div class="tempMax">10 degrees</div>
-              		<div class="tempMin">5 deg</div>
-            	</li>
-            	<li class="list-group-item">
-              		Day
-              		<img src="#" alt="weather icon" class="weather-icon" />
-              		<div class="tempMax">10 degrees</div>
-              		<div class="tempMin">5 deg</div>
-            	</li>
-            	<li class="list-group-item">
-              		Day
-              		<img src="#" alt="weather icon" class="weather-icon" />
-              		<div class="tempMax">10 degrees</div>
-              		<div class="tempMin">5 deg</div>
-            	</li>
-          </ul>
+        <div class="futureWeatherForecast">
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					Day
+						<img src="#" alt="weather icon" class="weather-icon" />
+						<div class="tempMax">10 degrees</div>
+						<div class="tempMin">5 deg</div>
+				</li>
+				<li class="list-group-item">
+					Day
+						<img src="#" alt="weather icon" class="weather-icon" />
+						<div class="tempMax">10 degrees</div>
+						<div class="tempMin">5 deg</div>
+				</li>
+				<li class="list-group-item">
+					Day
+						<img src="#" alt="weather icon" class="weather-icon" />
+						<div class="tempMax">10 degrees</div>
+						<div class="tempMin">5 deg</div>
+				</li>
+				<li class="list-group-item">
+					Day
+						<img src="#" alt="weather icon" class="weather-icon" />
+						<div class="tempMax">10 degrees</div>
+						<div class="tempMin">5 deg</div>
+				</li>
+				<li class="list-group-item">
+					Day
+						<img src="#" alt="weather icon" class="weather-icon" />
+						<div class="tempMax">10 degrees</div>
+						<div class="tempMin">5 deg</div>
+				</li>
+			</ul>
         </div>
 		</div>
-              <footer>
-        <p><a href="https://github.com/Dojin89/SC-weatherProject">Open-source coded, </a>by ASI</p>
-		<p>Weather data provided by <a href="https://openweathermap.org/api">OpenWeatherMap.</a></p>
-        <p>Icons from <a href="https://hjelp.yr.no/hc/en-us/articles/203786121-Weather-symbols-on-Yr">Yr.no </a>(available through <a href="https://github.com/YR">GitHub)</a></a> and
-		<a href="https://www.iconfinder.com/search">IconFinder.</a> </p>
-        <p>Hosted with <a href="#">Netlify.</a></p>
-      </footer>
-		<script src="src/index.js"></script>
-	</body>
+
+		<footer>
+			<p><a href="https://github.com/Dojin89/SC-weatherProject">Open-source coded, </a>by ASI</p>
+			<p>Weather data provided by <a href="https://openweathermap.org/api">OpenWeatherMap.</a></p>
+			<p>Icons from <a href="https://hjelp.yr.no/hc/en-us/articles/203786121-Weather-symbols-on-Yr">Yr.no </a>(available through <a href="https://github.com/YR">GitHub)</a></a> and
+			<a href="https://www.iconfinder.com/search">IconFinder.</a> </p>
+			<p>Hosted with <a href="#">Netlify.</a></p>
+		</footer>
+
+	<script src="src/index.js"></script>
+
+</body>
 </html>
