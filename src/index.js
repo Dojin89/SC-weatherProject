@@ -58,7 +58,6 @@ function displayWeatherConditions(response) {
 	let nowHumidityElement = document.querySelector("#now-humidity");
 	let nowConditionsElement = document.querySelector("#now-conditions");
 	let nowLocationElement = document.querySelector("#now-location");
-	let dateElement = document.querySelector("#timestamp");
 	let tempElement = document.querySelector("#current-temp");
 	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round(
 		response.data.main.feels_like
@@ -67,7 +66,6 @@ function displayWeatherConditions(response) {
 	nowHumidityElement.innerHTML = `${response.data.main.humidity} %`;
 	nowConditionsElement.innerHTML = `Currently: ${response.data.weather[0].description}`;
 	nowLocationElement.innerHTML = `${response.data.name} / ${response.data.sys.country}`;
-	dateElement.innerHTML = formattedTime(response.data.dt * 1000);
 	tempElement.innerHTML = `${Math.round(response.data.main.temp)}°`;
 	celsiusTemperature = Math.round(response.data.main.temp);
 }
