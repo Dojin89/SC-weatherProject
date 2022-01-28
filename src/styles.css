@@ -240,6 +240,7 @@ a:hover {
 #celsius-med-circle {
 	grid-column: 2;
 }
+
 #celsius {
 	background: rgba(0, 0, 0, 0.4);
 	grid-column: 1/2;
@@ -253,10 +254,7 @@ a:hover {
 	top: 1rem;
 	transition: 0.15s ease-out;
 }
-#celsius:hover {
-	background: rgba(0, 0, 0, 0.6);
-	cursor: pointer;
-}
+
 #celsius::before {
 	z-index: 3;
 	content: "C";
@@ -268,28 +266,7 @@ a:hover {
 	color: grey;
 	transition: 0.15s ease-out;
 }
-#celsius:hover::before {
-	color: white;
-}
-#celsius-med-circle {
-	grid-column: 1;
-	z-index: 2;
-	background-color: rgba(255, 255, 255, 0.1);
-	content: "";
-	width: 2rem;
-	height: 2rem;
-	border-radius: 50%;
-	position: relative;
-	left: 0.5rem;
-	top: -0.6rem;
-	transition: 0.15s ease-out;
-}
-#celsius-med-circle:hover {
-	background-color: rgba(255, 255, 255, 0.15);
-	content: "";
-	border-radius: 50%;
-	position: relative;
-}
+
 #fahrenheit {
 	background: rgba(0, 0, 0, 0.4);
 	grid-column: 2/2;
@@ -303,10 +280,6 @@ a:hover {
 	top: 1rem;
 	transition: 0.15s ease-out;
 }
-#fahrenheit:hover {
-	background: rgba(0, 0, 0, 0.6);
-	cursor: pointer;
-}
 #fahrenheit:before {
 	z-index: 3;
 	content: "F";
@@ -319,29 +292,13 @@ a:hover {
 	transition: 0.15s ease-out;
 }
 
-#fahrenheit:hover::before {
-
-	color: white;
+.containerUnits .active {
+color: blue;
 }
-
-#fahrenheit-med-circle {
-	grid-column: 2;
-	z-index: 2;
-	background-color: rgba(255, 255, 255, 0.1);
-	content: "";
-	width: 2rem;
-	height: 2rem;
-	border-radius: 50%;
-	position: relative;
-	left: 0.5rem;
-	top: -0.6rem;
-	transition: 0.15s ease-out;
+.containerUnits .active:hover{
+	text-decoration: none;
+	cursor: default;
 }
-#fahrenheit-med-circle:hover {
-	background-color: rgba(255, 255, 255, 0.15);
-	content: "";
-}
-
 #now-location,
 #city #country {
 	grid-column: 3/16;
@@ -646,6 +603,3 @@ footer {
 	margin: 2rem 0 0;
 	padding: 3rem 0;
 }
-
-
-
