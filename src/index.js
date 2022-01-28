@@ -53,21 +53,24 @@ navigator.geolocation.getCurrentPosition(showGeolocation);
 
 function displayWeatherConditions(response) {
 	console.log(response.data);
+	let nowTempFeelsLikeElement = document.querySelector("#nowTempFeelsLike");
 	let nowWindElement = document.querySelector("#now-wind");
 	let nowHumidityElement = document.querySelector("#now-humidity");
 	let nowConditionsElement = document.querySelector("#now-conditions");
 	let nowLocationElement = document.querySelector("#now-location");
 	let dateElement = document.querySelector("#timestamp");
 	let tempElement = document.querySelector("#current-temp");
+	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round(
+		response.data.main.feels_like
+	)}°`;
 	nowWindElement.innerHTML = `${Math.round(response.data.wind.speed)} m/s`;
 	nowHumidityElement.innerHTML = `${response.data.main.humidity} %`;
-	nowConditionsElement.innerHTML = `It is currently ${(response.data.weather[0].main)}.`;
+	nowConditionsElement.innerHTML = `Currently: ${response.data.weather[0].description}`;
 	nowLocationElement.innerHTML = `${response.data.name} / ${response.data.sys.country}`;
 	dateElement.innerHTML = formattedTime(response.data.dt * 1000);
 	tempElement.innerHTML = `${Math.round(response.data.main.temp)}°`;
 	celsiusTemperature = Math.round(response.data.main.temp);
 }
-
 
 function searchCity(city) {
 	let apiKey = `d023e1b756c64bfbbe242c0aadeadce3`;
@@ -83,7 +86,7 @@ function handleSubmit(event) {
 function convertToImperialTemp(event) {
 	event.preventDefault();
 	let tempElement = document.querySelector("#current-temp");
-	let imperialTemp = Math.round(celsiusTemperature  * 1.8 + 32);
+	let imperialTemp = Math.round(celsiusTemperature * 1.8 + 32);
 	tempElement.innerHTML = `${imperialTemp}°`;
 	imperialButton.classList.add("active");
 	metricButton.classList.remove("active");
