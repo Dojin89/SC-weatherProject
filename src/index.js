@@ -9,29 +9,35 @@ function formattedTime(timestamp) {
 		currentHour = `0${currentHour}`;
 	}
 	let days = [
+		"Sunday",
 		"Monday",
 		"Tuesday",
 		"Wednesday",
 		"Thursday",
 		"Friday",
 		"Saturday",
-		"Sunday",
 	];
 	let currentDay = days[date.getDay()];
 	return `${currentDay} ${currentHour}:${currentMinutes}`;
 }
 
-function formattedSunTime(timestamp) {
+function formattedSunTime(timestamp, response) {
 	let date = new Date(timestamp);
-	let currentHour = date.getHours();
-	let currentMinutes = date.getMinutes();
-	if (currentMinutes < 10) {
-		currentMinutes = `0${currentMinutes}`;
+	let utc_offset = date.getTimezoneOffset();
+	console.log(utc_offset);
+	let minutes = date.setMinutes(date.getMinutes() + utc_offset);
+	console.log(`UTC: ${date}`);
+
+	let sunTimeHour = date.getHours();
+	let sunTimeMinutes = date.getMinutes();
+
+	if (sunTimeMinutes < 10) {
+		sunTimeMinutes = `0${sunTimeMinutes}`;
 	}
-	if (currentHour < 10) {
-		currentHour = `0${currentHour}`;
+	if (sunTimeHour < 10) {
+		sunTimeHour = `0${sunTimeHour}`;
 	}
-	return `${currentHour}:${currentMinutes}`;
+	return `${sunTimeHour}:${sunTimeMinutes}`;
 }
 function getGeolocation(event) {
 	event.preventDefault();
@@ -58,9 +64,8 @@ function displayWeatherConditions(response) {
 	let timeElement = document.querySelector(".time");
 	let todaySunrise = document.querySelector("#sunrise-text");
 	let todaySunset = document.querySelector("#sunset-text");
-	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round(
-		response.data.main.feels_like
-	)}°`;
+	let todayPressure = document.querySelector("#today-pressure-text");
+	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round(response.data.main.feels_like)}°`;
 	nowWindElement.innerHTML = `${Math.round(response.data.wind.speed)} m/s`;
 	nowHumidityElement.innerHTML = `${response.data.main.humidity} %`;
 	nowConditionsElement.innerHTML = `Currently: ${response.data.weather[0].description}`;
@@ -68,8 +73,11 @@ function displayWeatherConditions(response) {
 	tempElement.innerHTML = `${Math.round(response.data.main.temp)}°`;
 	celsiusTemperature = Math.round(response.data.main.temp);
 	timeElement.innerHTML = formattedTime(response.data.dt * 1000);
+	let timezone_offset = response.data.timezone;
+	console.log(timezone_offset);
 	todaySunrise.innerHTML = formattedSunTime(response.data.sys.sunrise * 1000);
 	todaySunset.innerHTML = formattedSunTime(response.data.sys.sunset * 1000);
+	todayPressure.innerHTML = `${Math.round(response.data.main.pressure)} mb`;
 	displayRain(response);
 }
 function displayRain(response) {
