@@ -20,6 +20,19 @@ function formattedTime(timestamp) {
 	let currentDay = days[date.getDay()];
 	return `${currentDay} ${currentHour}:${currentMinutes}`;
 }
+
+function formattedSunTime(timestamp) {
+	let date = new Date(timestamp);
+	let currentHour = date.getHours();
+	let currentMinutes = date.getMinutes();
+	if (currentMinutes < 10) {
+		currentMinutes = `0${currentMinutes}`;
+	}
+	if (currentHour < 10) {
+		currentHour = `0${currentHour}`;
+	}
+	return `${currentHour}:${currentMinutes}`;
+}
 function getGeolocation(event) {
 	event.preventDefault();
 	navigator.geolocation.getCurrentPosition(showGeolocation);
@@ -43,6 +56,8 @@ function displayWeatherConditions(response) {
 	let nowLocationElement = document.querySelector("#now-location");
 	let tempElement = document.querySelector("#current-temp");
 	let timeElement = document.querySelector(".time");
+	let todaySunrise = document.querySelector("#sunrise-text");
+	let todaySunset = document.querySelector("#sunset-text");
 	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round(
 		response.data.main.feels_like
 	)}°`;
@@ -52,22 +67,25 @@ function displayWeatherConditions(response) {
 	nowLocationElement.innerHTML = `${response.data.name} / ${response.data.sys.country}`;
 	tempElement.innerHTML = `${Math.round(response.data.main.temp)}°`;
 	celsiusTemperature = Math.round(response.data.main.temp);
-	displayRain(response);
 	timeElement.innerHTML = formattedTime(response.data.dt * 1000);
+	todaySunrise.innerHTML = formattedSunTime(response.data.sys.sunrise * 1000);
+	todaySunset.innerHTML = formattedSunTime(response.data.sys.sunset * 1000);
+	displayRain(response);
 }
 function displayRain(response) {
-	if (response.data.rain > 0) {
-		document.querySelector("#now-rain").innerHTML = `${Math.round(
-			response.data.rain
-		)} mm`;
+	let nowRainElement = document.querySelector("#now-rain");
+	let rain = response.data.rain;
+	if (rain) {
+		nowRainElement.innerHTML = `${response.data.rain["1h"]} mm`;
 	} else {
-		document.querySelector("#now-rain").innerHTML = `0 mm`;
+		nowRainElement.innerHTML = `0 mm`;
 	}
 }
+
 function searchCity(city) {
 	let apiKey = `d023e1b756c64bfbbe242c0aadeadce3`;
 	let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=d023e1b756c64bfbbe242c0aadeadce3&units=metric`;
-	axios.get(apiUrl).then(displayWeatherConditions, displayRain);
+	axios.get(apiUrl).then(displayWeatherConditions);
 }
 
 function handleSubmit(event) {
@@ -105,4 +123,4 @@ let imperialButton = document.querySelector("#fahrenheit");
 imperialButton.addEventListener("click", convertToImperialTemp);
 
 formattedTime();
-searchCity("London");
+searchCity("Stavanger");

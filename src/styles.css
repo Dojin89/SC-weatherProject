@@ -330,15 +330,19 @@ a:hover {
 	background-color: rgba(0, 0, 0, 0.1);
 	color: rgb(107, 107, 107);
 	font-size: 0.7rem;
+	font-weight: 200;
 	word-spacing: 0.3rem;
 	letter-spacing: 0.25rem;
-	text-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.637);
 	padding: 0.3rem 0.9rem;
 	margin: 0 3rem 1rem 0;
 	position: relative;
 	right: -2rem;
 }
 
+.lastUpdated {
+color: rgba(255, 255, 255, 0.9);
+font-weight: 300;
+}
 #container-current-conditions {
 	background-color: rgba(0, 0, 0, 0.1);
 	grid-column: 3/16;
