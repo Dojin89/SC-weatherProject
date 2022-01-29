@@ -338,6 +338,7 @@ a:hover {
 	position: relative;
 	right: -2rem;
 }
+
 #container-current-conditions {
 	background-color: rgba(0, 0, 0, 0.1);
 	grid-column: 3/16;
