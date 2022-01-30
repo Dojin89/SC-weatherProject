@@ -99,10 +99,8 @@ function displayWeatherConditions(response) {
 	celsiusTemperature = Math.round(response.data.main.temp);
 	timeElement.innerHTML = formattedTime(response.data.dt * 1000);
 	let timezone_offset = response.data.timezone;
-	todaySunrise.innerHTML = formattedSunTime(
-		(response.data.sys.sunrise + timezone_offset) * 1000
-	);
-	todaySunset.innerHTML = formattedSunTime(response.data.sys.sunset * 1000);
+	todaySunrise.innerHTML = formattedSunTime((response.data.sys.sunrise + timezone_offset) * 1000);
+	todaySunset.innerHTML = formattedSunTime((response.data.sys.sunset + timezone_offset) * 1000);
 	todayPressure.innerHTML = `${Math.round(response.data.main.pressure)} mb`;
 	displayRain(response);
 	console.log(response.data.snow);
