@@ -170,7 +170,7 @@ a:hover {
 	grid-row: 1/7;
 	grid-column: 1/5;
 }
-#current-icon {
+#now-icon {
 	z-index: 20;
 	grid-column: 2;
 	grid-row: 1/3;

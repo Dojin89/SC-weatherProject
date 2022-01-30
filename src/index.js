@@ -60,16 +60,24 @@ function displayWeatherConditions(response) {
 	let nowHumidityElement = document.querySelector("#now-humidity");
 	let nowConditionsElement = document.querySelector("#now-conditions");
 	let nowLocationElement = document.querySelector("#now-location");
+	let nowIconElement = document.querySelector("#now-icon");
 	let tempElement = document.querySelector("#current-temp");
 	let timeElement = document.querySelector(".time");
 	let todaySunrise = document.querySelector("#sunrise-text");
 	let todaySunset = document.querySelector("#sunset-text");
 	let todayPressure = document.querySelector("#today-pressure-text");
-	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round(response.data.main.feels_like)}°`;
+
+	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round(
+		response.data.main.feels_like
+	)}°`;
 	nowWindElement.innerHTML = `${Math.round(response.data.wind.speed)} m/s`;
 	nowHumidityElement.innerHTML = `${response.data.main.humidity} %`;
 	nowConditionsElement.innerHTML = `Currently: ${response.data.weather[0].description}`;
 	nowLocationElement.innerHTML = `${response.data.name} / ${response.data.sys.country}`;
+	nowIconElement.setAttribute(
+		"src",
+		"https://openweathermap.org/img/wn/04d@2x.png"
+	);
 	tempElement.innerHTML = `${Math.round(response.data.main.temp)}°`;
 	celsiusTemperature = Math.round(response.data.main.temp);
 	timeElement.innerHTML = formattedTime(response.data.dt * 1000);
