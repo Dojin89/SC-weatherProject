@@ -65,28 +65,19 @@ function displayWeatherConditions(response) {
 	let todaySunrise = document.querySelector("#sunrise-text");
 	let todaySunset = document.querySelector("#sunset-text");
 	let todayPressure = document.querySelector("#today-pressure-text");
-
-	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round(
-		response.data.main.feels_like
-	)}°`;
+	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round(response.data.main.feels_like)}°`;
 	nowWindElement.innerHTML = `${Math.round(response.data.wind.speed)} m/s`;
 	nowHumidityElement.innerHTML = `${response.data.main.humidity} %`;
 	nowConditionsElement.innerHTML = `Currently: ${response.data.weather[0].description}`;
 	nowLocationElement.innerHTML = `${response.data.name} / ${response.data.sys.country}`;
-
-	nowIconElement.setAttribute(
-		"src",
-		`https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
-	);
+	nowIconElement.setAttribute("src", `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`);
 	nowIconElement.setAttribute("alt", response.data.weather[0].description);
 	tempElement.innerHTML = `${Math.round(response.data.main.temp)}°`;
 	celsiusTemperature = Math.round(response.data.main.temp);
 	timeElement.innerHTML = formattedTime(response.data.dt * 1000);
 	let timezone_offset = response.data.timezone;
 	console.log(timezone_offset);
-	todaySunrise.innerHTML = formattedSunTime(
-		(response.data.sys.sunrise + timezone_offset) * 1000
-	);
+	todaySunrise.innerHTML = formattedSunTime((response.data.sys.sunrise + timezone_offset) * 1000);
 	todaySunset.innerHTML = formattedSunTime(response.data.sys.sunset * 1000);
 	todayPressure.innerHTML = `${Math.round(response.data.main.pressure)} mb`;
 	displayRain(response);
