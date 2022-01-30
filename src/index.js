@@ -121,16 +121,20 @@ function handleSubmit(event) {
 }
 function convertToImperialTemp(event) {
 	event.preventDefault();
-	let tempElement = document.querySelector("#current-temp");
+	let tempElementOne = document.querySelector("#current-temp");
+	let tempElementTwo = document.querySelector("#nowTempFeelsLike");
 	let imperialTemp = Math.round(celsiusTemperature * 1.8 + 32);
-	tempElement.innerHTML = `${imperialTemp}°`;
+	tempElementOne.innerHTML = `${imperialTemp}°`;
+	tempElementTwo.innerHTML = `Feels like ${imperialTemp}°`;
 	imperialButton.classList.add("active");
 	metricButton.classList.remove("active");
 }
 function convertToMetricTemp(event) {
 	event.preventDefault();
-	let metricTemp = document.querySelector("#current-temp");
-	metricTemp.innerHTML = `${celsiusTemperature}°`;
+	let tempElementOne = document.querySelector("#current-temp");
+	let tempElementTwo = document.querySelector("#nowTempFeelsLike");
+	tempElementOne.innerHTML = `${celsiusTemperature}°`;
+	tempElementTwo.innerHTML = `Feels like ${celsiusTemperature}°`;
 	metricButton.classList.add("active");
 	imperialButton.classList.remove("active");
 }
