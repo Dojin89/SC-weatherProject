@@ -52,7 +52,6 @@ function showGeolocation(position) {
 	axios.get(apiUrl).then(displayWeatherConditions);
 }
 navigator.geolocation.getCurrentPosition(showGeolocation);
-
 function displayWeatherConditions(response) {
 	console.log(response.data);
 	let nowTempFeelsLikeElement = document.querySelector("#nowTempFeelsLike");
@@ -74,28 +73,23 @@ function displayWeatherConditions(response) {
 	nowHumidityElement.innerHTML = `${response.data.main.humidity} %`;
 	nowConditionsElement.innerHTML = `Currently: ${response.data.weather[0].description}`;
 	nowLocationElement.innerHTML = `${response.data.name} / ${response.data.sys.country}`;
+
 	nowIconElement.setAttribute(
 		"src",
-		"https://openweathermap.org/img/wn/04d@2x.png"
+		`https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
 	);
+	nowIconElement.setAttribute("alt", response.data.weather[0].description);
 	tempElement.innerHTML = `${Math.round(response.data.main.temp)}°`;
 	celsiusTemperature = Math.round(response.data.main.temp);
 	timeElement.innerHTML = formattedTime(response.data.dt * 1000);
 	let timezone_offset = response.data.timezone;
 	console.log(timezone_offset);
-	todaySunrise.innerHTML = formattedSunTime(response.data.sys.sunrise * 1000);
+	todaySunrise.innerHTML = formattedSunTime(
+		(response.data.sys.sunrise + timezone_offset) * 1000
+	);
 	todaySunset.innerHTML = formattedSunTime(response.data.sys.sunset * 1000);
 	todayPressure.innerHTML = `${Math.round(response.data.main.pressure)} mb`;
 	displayRain(response);
-}
-function displayRain(response) {
-	let nowRainElement = document.querySelector("#now-rain");
-	let rain = response.data.rain;
-	if (rain) {
-		nowRainElement.innerHTML = `${response.data.rain["1h"]} mm`;
-	} else {
-		nowRainElement.innerHTML = `0 mm`;
-	}
 }
 
 function searchCity(city) {
