@@ -21,7 +21,7 @@ function formattedTime(timestamp) {
 	return `${currentDay} ${currentHour}:${currentMinutes}`;
 }
 
-function formattedSunTime(timestamp, response) {
+function formattedSunTime(timestamp) {
 	let date = new Date(timestamp);
 	let utc_offset = date.getTimezoneOffset();
 	console.log(utc_offset);
@@ -39,6 +39,82 @@ function formattedSunTime(timestamp, response) {
 	}
 	return `${sunTimeHour}:${sunTimeMinutes}`;
 }
+
+function formatDay(timestamp) {
+	let date = new Date(timestamp * 1000);
+	let day = date.getDay();
+	let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+	return days[day];
+}
+
+function formattedLocalTime(timestamp) {
+	let date = new Date(timestamp);
+	let utc_offset = date.getTimezoneOffset();
+	console.log(utc_offset);
+	let minutes = date.setMinutes(date.getMinutes() + utc_offset);
+	console.log(`UTC: ${date}`);
+
+	let currentHour = date.getHours();
+	let currentMinutes = date.getMinutes();
+	if (currentMinutes < 10) {
+		currentMinutes = `0${currentMinutes}`;
+	}
+	if (currentHour < 10) {
+		currentHour = `0${currentHour}`;
+	}
+	let days = [
+		"Sunday",
+		"Monday",
+		"Tuesday",
+		"Wednesday",
+		"Thursday",
+		"Friday",
+		"Saturday",
+	];
+	let currentDay = days[date.getDay()];
+	return `${currentDay} ${currentHour}:${currentMinutes}`;
+}
+
+function displayForecast(response) {
+	let forecast = response.data.daily;
+	console.log(forecast);
+	let forecastElement = document.querySelector(".forecast");
+
+	let forecastHTML = `<div class="row">`;
+
+	forecast.forEach(function (forecastDay, index) {
+		if (index < 6) {
+			forecastHTML =
+				forecastHTML +
+				`
+                <div class="col-2">
+                    <div class="weather-forecast-date">${formatDay(
+						forecastDay.dt
+					)}</div>
+                    <img
+                        src="http://openweathermap.org/img/wn/${
+							forecastDay.weather[0].icon
+						}@2x.png"
+                        alt=""
+                        width="42"
+                    />
+                    <div class="weather-forecast-temperatures">
+                        <span class="forecastTempMin"> ${Math.round(
+							(forecastDay.temp.min * 10) / 10
+						)}° / </span>          
+                        <span class="forecastTempMax"> ${Math.round(
+							(forecastDay.temp.max * 10) / 10
+						)}° </span>
+                    </div>
+                </div>
+                `;
+		}
+	});
+	forecastHTML = forecastHTML + `</div>`;
+	forecastElement.innerHTML = forecastHTML;
+}
+
 function getGeolocation(event) {
 	event.preventDefault();
 	navigator.geolocation.getCurrentPosition(showGeolocation);
@@ -52,26 +128,46 @@ function showGeolocation(position) {
 	axios.get(apiUrl).then(displayWeatherConditions);
 }
 
+function getForecast(coordinates) {
+	console.log(coordinates);
+	let apiKey = `d023e1b756c64bfbbe242c0aadeadce3`;
+	let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
+	console.log(apiUrl);
+	axios.get(apiUrl).then(displayForecast);
+}
+
 function displayRain(response) {
 	let nowRainElement = document.querySelector("#now-rain");
+	let nowRainIcon = document.querySelector("#now-rain-icon");
+	let nowSnowIcon = document.querySelector("#now-rain-icon");
 	let rain = response.data.rain;
 	let snow = response.data.snow;
 	if (rain || snow) {
 		if (rain) {
-			nowRainElement.innerHTML = `${response.data.rain["1h"]} mm`;
+			nowRainElement.innerHTML = `${
+				Math.round(response.data.rain["1h"] * 10) / 10
+			} mm`;
+			nowRainIcon.setAttribute(
+				"src",
+				`img/icons/umbrella-blue-solid.png`
+			);
 		}
 		if (snow) {
-			nowRainElement.innerHTML = `${response.data.snow["1h"]} mm`;
+			nowRainElement.innerHTML = `${
+				Math.round(response.data.snow["1h"] * 10) / 10
+			} mm`;
+			nowSnowIcon.setAttribute("src", `img/icons/snow2.png`);
 		}
 	} else {
 		nowRainElement.innerHTML = `0 mm`;
+		nowRainIcon.setAttribute("src", `img/icons/umbrella-blue-solid.png`);
 	}
 }
-
 navigator.geolocation.getCurrentPosition(showGeolocation);
 
 function displayWeatherConditions(response) {
 	console.log(response.data);
+	let localTimeElement = document.querySelector("#local-time");
 	let nowTempFeelsLikeElement = document.querySelector("#nowTempFeelsLike");
 	let nowWindElement = document.querySelector("#now-wind");
 	let nowHumidityElement = document.querySelector("#now-humidity");
@@ -84,7 +180,7 @@ function displayWeatherConditions(response) {
 	let todaySunset = document.querySelector("#sunset-text");
 	let todayPressure = document.querySelector("#today-pressure-text");
 	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round(
-		response.data.main.feels_like
+		(response.data.main.feels_like * 10) / 10
 	)}°`;
 	nowWindElement.innerHTML = `${Math.round(response.data.wind.speed)} m/s`;
 	nowHumidityElement.innerHTML = `${response.data.main.humidity} %`;
@@ -95,9 +191,8 @@ function displayWeatherConditions(response) {
 		`https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
 	);
 	nowIconElement.setAttribute("alt", response.data.weather[0].description);
-	tempElement.innerHTML = `${Math.round(response.data.main.temp)}°`;
-	celsiusTemperature = Math.round(response.data.main.temp);
-	timeElement.innerHTML = formattedTime(response.data.dt * 1000);
+	tempElement.innerHTML = `${Math.round(response.data.main.temp * 10) / 10}°`;
+	celsiusTemperature = Math.round(response.data.main.temp * 10) / 10;
 	let timezone_offset = response.data.timezone;
 	todaySunrise.innerHTML = formattedSunTime(
 		(response.data.sys.sunrise + timezone_offset) * 1000
@@ -105,9 +200,14 @@ function displayWeatherConditions(response) {
 	todaySunset.innerHTML = formattedSunTime(
 		(response.data.sys.sunset + timezone_offset) * 1000
 	);
+	timeElement.innerHTML = formattedTime(response.data.dt * 1000);
+	localTimeElement.innerHTML = formattedLocalTime(
+		(response.data.dt + timezone_offset) * 1000
+	);
 	todayPressure.innerHTML = `${Math.round(response.data.main.pressure)} mb`;
 	displayRain(response);
-	console.log(response.data.snow);
+	getForecast(response.data.coord);
+	displayForecast(response);
 }
 
 function searchCity(city) {
@@ -125,7 +225,7 @@ function convertToImperialTemp(event) {
 	event.preventDefault();
 	let tempElementOne = document.querySelector("#current-temp");
 	let tempElementTwo = document.querySelector("#nowTempFeelsLike");
-	let imperialTemp = Math.round(celsiusTemperature * 1.8 + 32);
+	let imperialTemp = Math.round((celsiusTemperature * 1.8 + 32) * 10) / 10;
 	tempElementOne.innerHTML = `${imperialTemp}°`;
 	tempElementTwo.innerHTML = `Feels like ${imperialTemp}°`;
 	imperialButton.classList.add("active");
@@ -155,4 +255,4 @@ let imperialButton = document.querySelector("#fahrenheit");
 imperialButton.addEventListener("click", convertToImperialTemp);
 
 formattedTime();
-searchCity("Stavanger");
+searchCity("London");
