@@ -24,9 +24,7 @@ function formattedTime(timestamp) {
 function formattedSunTime(timestamp) {
 	let date = new Date(timestamp);
 	let utc_offset = date.getTimezoneOffset();
-	console.log(utc_offset);
 	let minutes = date.setMinutes(date.getMinutes() + utc_offset);
-	console.log(`UTC: ${date}`);
 
 	let sunTimeHour = date.getHours();
 	let sunTimeMinutes = date.getMinutes();
@@ -51,17 +49,15 @@ function formatDay(timestamp) {
 function formattedLocalTime(timestamp) {
 	let date = new Date(timestamp);
 	let utc_offset = date.getTimezoneOffset();
-	console.log(utc_offset);
 	let minutes = date.setMinutes(date.getMinutes() + utc_offset);
-	console.log(`UTC: ${date}`);
 
-	let currentHour = date.getHours();
-	let currentMinutes = date.getMinutes();
-	if (currentMinutes < 10) {
-		currentMinutes = `0${currentMinutes}`;
+	let currentLocalHour = date.getHours();
+	let currentLocalMinutes = date.getMinutes();
+	if (currentLocalMinutes < 10) {
+		currentLocalMinutes = `0${currentLocalMinutes}`;
 	}
-	if (currentHour < 10) {
-		currentHour = `0${currentHour}`;
+	if (currentLocalHour < 10) {
+		currentLocalHour = `0${currentLocalHour}`;
 	}
 	let days = [
 		"Sunday",
@@ -72,43 +68,60 @@ function formattedLocalTime(timestamp) {
 		"Friday",
 		"Saturday",
 	];
-	let currentDay = days[date.getDay()];
-	return `${currentDay} ${currentHour}:${currentMinutes}`;
+
+	let currentLocalDay = days[date.getDay()];
+	let skyImg = document.querySelector("#current-sky");
+	if (currentLocalHour < 5) {
+		skyImg.setAttribute("src", `img/sky/sky-night_PENUP.jpg`);
+	}
+	if (currentLocalHour >= 22) {
+		skyImg.setAttribute("src", `img/sky/sky-night_PENUP.jpg`);
+	}
+	if (currentLocalHour >= 5 && currentLocalHour < 9) {
+		skyImg.setAttribute("src", `img/sky/sky_morning.jpg`);
+	}
+	if (currentLocalHour >= 9 && currentLocalHour < 18) {
+		skyImg.setAttribute(
+			"src",
+			`img/sky/pexels-francesco-ungaro-281260.jpg`
+		);
+	}
+	if (currentLocalHour >= 18 && currentLocalHour < 22) {
+		skyImg.setAttribute("src", `img/sky/sky_sunset.jpg`);
+	}
+
+	return `${currentLocalDay} ${currentLocalHour}:${currentLocalMinutes}`;
 }
 
 function displayForecast(response) {
 	let forecast = response.data.daily;
-	console.log(forecast);
-	let forecastElement = document.querySelector(".forecast");
 
+	let forecastElement = document.querySelector(".forecast");
 	let forecastHTML = `<div class="row">`;
 
 	forecast.forEach(function (forecastDay, index) {
 		if (index < 6) {
+			let forecastTempMin = Math.round((forecastDay.temp.min * 10) / 10);
+			let forecastTempMax = Math.round((forecastDay.temp.max * 10) / 10);
+
 			forecastHTML =
 				forecastHTML +
 				`
-                <div class="col-2">
-                    <div class="weather-forecast-date">${formatDay(
-						forecastDay.dt
-					)}</div>
-                    <img
-                        src="http://openweathermap.org/img/wn/${
-							forecastDay.weather[0].icon
-						}@2x.png"
-                        alt=""
-                        width="42"
-                    />
-                    <div class="weather-forecast-temperatures">
-                        <span class="forecastTempMin"> ${Math.round(
-							(forecastDay.temp.min * 10) / 10
-						)}° / </span>          
-                        <span class="forecastTempMax"> ${Math.round(
-							(forecastDay.temp.max * 10) / 10
-						)}° </span>
-                    </div>
-                </div>
-                `;
+      				<div class="col-2">
+        				<div class="weather-forecast-date">${formatDay(forecastDay.dt)}</div>
+        				<img
+          					src="http://openweathermap.org/img/wn/${
+								forecastDay.weather[0].icon
+							}@2x.png"
+          					alt=""
+          					width="42"
+        				/>
+        				<div class="weather-forecast-temperatures">
+          					<span class="forecastTempMin"> ${forecastTempMin}° / </span>          
+		  					<span class="forecastTempMax"> ${forecastTempMax}° </span>
+        				</div>
+      				</div>
+					`;
 		}
 	});
 	forecastHTML = forecastHTML + `</div>`;
@@ -133,7 +146,13 @@ function getForecast(coordinates) {
 	let apiKey = `d023e1b756c64bfbbe242c0aadeadce3`;
 	let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
 	console.log(apiUrl);
-	axios.get(apiUrl).then(displayForecast);
+
+	axios.get(apiUrl).then(displayForecast).then(displayUv);
+}
+
+function displayUv(response) {
+	let nowUv = document.querySelector("#now-solar-radiation");
+	nowUv.innerHTML = `${response.data.current.uvi}`;
 }
 
 function displayRain(response) {
