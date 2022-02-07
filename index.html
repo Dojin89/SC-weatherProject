@@ -39,7 +39,7 @@
 							class="icon"
 							id="search-icon"
 						></button>
-						<div class="hide">Search</div>
+						<div class="hide" id="search-hover">Search</div>
 						<button
 							type="button"
 							class="icon"
@@ -67,10 +67,6 @@
 					</div>
 				</div>
 
-				<div class="containerUnits">
-					<a href="#" class="active" id="celsius"><div class="convertToMetricButton"></span><span id="celsius-med-circle"></span></div></a>
-					<a href="#" id="fahrenheit"><div class="convertToImperialButton"><span id="fahrenheit-med-circle"></span></div></a>
-				</div>
 
 				<div class="el2" id="now-location">
 					<span class="el2" id="city"> </span>
@@ -78,9 +74,8 @@
 				</div>
 
 				<div class="el3" id="timestamp">
-					<span class="lastUpdated">Last updated: </span>
-					<span class="time"></span>
-					<span class="localTimeText"> - Local time: <span id="local-time"></span></span>
+					<span class="lastUpdated">Last updated: <span class="time"></span></span>
+					<span class="localTimeText"> / Local time: <span id="local-time"></span></span>
 					
 				</div>
 
@@ -103,26 +98,14 @@
 							id="now-wind-icon"
 						/>
 					<span id="now-humidity"></span>
-						<img"
-							src="img/icons/humidity.png"
+						<img
+							src="img/icons/humidity2.png"
 							alt="Humidity"
 							id="now-humidity-icon"
 						/>
 				</div>
 
 				<div class="el5" id="container-today-conditions">
-					<div class="sunrise">
-                        <span id="sunrise-text"></span>
-                    </div>
-                    <div class="sunset">
-                        <span id="sunset-text"></span>
-                    </div>
-                    <div class="now-solar-radiation">
-                        <span id="now-solar-radiation-text"></span>
-                    </div>
-                    <div class="today-pressure">
-						<span id="today-pressure-text"></span>
-                    </div>
 
                     <div class="sunrise">
                         <img
@@ -130,40 +113,38 @@
                             alt="Sunrise"
                             id="sunrise-icon"
 						/>
-                    </div>
+                        <span id="sunrise-text"></span>
+					</div>
                     <div class="sunset">
                         <img
                             src="img/icons/sunset.png"
 							alt="Sunset"
                             id="sunset-icon"
 						/>
-                    </div>
-                    <div class="today-solar-radiation">
-                        <img src="img/icons/UV.png"alt="Solar radiation" id="today-solar-radiation-icon">
-                    </div>
+                        <span id="sunset-text"></span>
+					</div>
+ 
 					<div class="today-pressure">
 						<img
                             src="img/icons/pressure-mb.png"
 							alt="Pressure"
 							id="now-pressure-icon"
 						/>
+						<span id="today-pressure-text"></span>
+
                     </div>
 						</span>
                     </div>
 				</div>
-
-                <div class="dropdown" id="container-today-conditions-full"></div>
-
-
         <div class="forecast">
             <div class="row">
                 <div class="col-2">
                     <div class="forecastDate"></div>
-                    <img src="" alt="forecast-icon" width="300">
+                    <img src="" alt="forecast-icon" width="400">
                     <div class="forecastTemp">
-                        <span class="forecastTempMin"></span>
+                        <span class="temp" id="forecastTempMin"></span>
                         <span class="space"> / </span>
-                        <span class="forecastTempMax"></span>
+                        <span class="temp" id="forecastTempMax"></span>
                     </div>
                 </div>
             </div>

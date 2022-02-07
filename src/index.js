@@ -72,33 +72,49 @@ function formattedLocalTime(timestamp) {
 	let currentLocalDay = days[date.getDay()];
 	let skyImg = document.querySelector("#current-sky");
 	if (currentLocalHour < 5) {
-		skyImg.setAttribute("src", `img/sky/sky-night_PENUP.jpg`);
+		skyImg.setAttribute("src", `img/sky/sky_night.jpg`);
 	}
 	if (currentLocalHour >= 22) {
-		skyImg.setAttribute("src", `img/sky/sky-night_PENUP.jpg`);
+		skyImg.setAttribute("src", `img/sky/sky_night.jpg`);
 	}
 	if (currentLocalHour >= 5 && currentLocalHour < 9) {
-		skyImg.setAttribute("src", `img/sky/sky_morning.jpg`);
+		skyImg.setAttribute("src", `img/sky/sky_sunrise.jpg`);
 	}
+
 	if (currentLocalHour >= 9 && currentLocalHour < 18) {
-		skyImg.setAttribute(
-			"src",
-			`img/sky/pexels-francesco-ungaro-281260.jpg`
-		);
+		skyImg.setAttribute("src", `img/sky/sky_day.jpg`);
 	}
 	if (currentLocalHour >= 18 && currentLocalHour < 22) {
-		skyImg.setAttribute("src", `img/sky/sky_sunset.jpg`);
+		skyImg.setAttribute("src", `img/sky/sky_sunset1.jpg`);
 	}
 
 	return `${currentLocalDay} ${currentLocalHour}:${currentLocalMinutes}`;
 }
+function displayUvi(response) {
+	console.log(response);
+	let uvi = response.data.currently[8].uvi;
+	let nowUv = document.querySelector("#now-solar-radiation-text");
+	if (uvi < 3) {
+		nowUv.innerHtml = `Low`;
+	}
+	if (uvi >= 3 && uvi < 6) {
+		nowUv.innerHtml = `Moderate`;
+	}
+	if (uvi >= 6 && uvi < 8) {
+		nowUv.innerHtml = `High`;
+	}
+	if (uvi >= 8 && uvi < 11) {
+		nowUv.innerHtml = `Very high`;
+	}
+	if (uvi >= 11) {
+		nowUv.innerHtml = `Extreme`;
+	}
+}
 
 function displayForecast(response) {
 	let forecast = response.data.daily;
-
 	let forecastElement = document.querySelector(".forecast");
 	let forecastHTML = `<div class="row">`;
-
 	forecast.forEach(function (forecastDay, index) {
 		if (index < 6) {
 			let forecastTempMin = Math.round((forecastDay.temp.min * 10) / 10);
@@ -108,18 +124,21 @@ function displayForecast(response) {
 				forecastHTML +
 				`
       				<div class="col-2">
+					  <div  class="day">
         				<div class="weather-forecast-date">${formatDay(forecastDay.dt)}</div>
         				<img
           					src="http://openweathermap.org/img/wn/${
 								forecastDay.weather[0].icon
 							}@2x.png"
           					alt=""
-          					width="42"
+          					width="60"
+							  class="forecastIcon"
         				/>
         				<div class="weather-forecast-temperatures">
-          					<span class="forecastTempMin"> ${forecastTempMin}° / </span>          
-		  					<span class="forecastTempMax"> ${forecastTempMax}° </span>
+          					<span class="temp" id="forecast-temp-min" > ${forecastTempMin}° / </span>          
+		  					<span class="temp" id="forecast-temp-max"> ${forecastTempMax}° </span>
         				</div>
+						</div>
       				</div>
 					`;
 		}
@@ -146,13 +165,7 @@ function getForecast(coordinates) {
 	let apiKey = `d023e1b756c64bfbbe242c0aadeadce3`;
 	let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
 	console.log(apiUrl);
-
-	axios.get(apiUrl).then(displayForecast).then(displayUv);
-}
-
-function displayUv(response) {
-	let nowUv = document.querySelector("#now-solar-radiation");
-	nowUv.innerHTML = `${response.data.current.uvi}`;
+	axios.get(apiUrl).then(displayForecast);
 }
 
 function displayRain(response) {
@@ -163,18 +176,16 @@ function displayRain(response) {
 	let snow = response.data.snow;
 	if (rain || snow) {
 		if (rain) {
-			nowRainElement.innerHTML = `${
-				Math.round(response.data.rain["1h"] * 10) / 10
-			} mm`;
+			let nowRain = Math.round(response.data.rain["1h"] * 10) / 10;
+			nowRainElement.innerHTML = `${nowRain} mm`;
 			nowRainIcon.setAttribute(
 				"src",
 				`img/icons/umbrella-blue-solid.png`
 			);
 		}
 		if (snow) {
-			nowRainElement.innerHTML = `${
-				Math.round(response.data.snow["1h"] * 10) / 10
-			} mm`;
+			let nowSnow = Math.round(response.data.snow["1h"] * 10) / 10;
+			nowRainElement.innerHTML = `${nowSnow} mm`;
 			nowSnowIcon.setAttribute("src", `img/icons/snow2.png`);
 		}
 	} else {
@@ -210,7 +221,9 @@ function displayWeatherConditions(response) {
 		`https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
 	);
 	nowIconElement.setAttribute("alt", response.data.weather[0].description);
-	tempElement.innerHTML = `${Math.round(response.data.main.temp * 10) / 10}°`;
+	tempElement.innerHTML = `${
+		Math.round(response.data.main.temp * 10) / 10
+	}°C`;
 	celsiusTemperature = Math.round(response.data.main.temp * 10) / 10;
 	let timezone_offset = response.data.timezone;
 	todaySunrise.innerHTML = formattedSunTime(
@@ -227,6 +240,8 @@ function displayWeatherConditions(response) {
 	displayRain(response);
 	getForecast(response.data.coord);
 	displayForecast(response);
+	console.log(response.data.currently);
+	displayUvi(response.data.currently);
 }
 
 function searchCity(city) {
@@ -240,26 +255,6 @@ function handleSubmit(event) {
 	let city = document.querySelector("#city-input").value;
 	searchCity(city);
 }
-function convertToImperialTemp(event) {
-	event.preventDefault();
-	let tempElementOne = document.querySelector("#current-temp");
-	let tempElementTwo = document.querySelector("#nowTempFeelsLike");
-	let imperialTemp = Math.round((celsiusTemperature * 1.8 + 32) * 10) / 10;
-	tempElementOne.innerHTML = `${imperialTemp}°`;
-	tempElementTwo.innerHTML = `Feels like ${imperialTemp}°`;
-	imperialButton.classList.add("active");
-	metricButton.classList.remove("active");
-}
-function convertToMetricTemp(event) {
-	event.preventDefault();
-	let tempElementOne = document.querySelector("#current-temp");
-	let tempElementTwo = document.querySelector("#nowTempFeelsLike");
-	tempElementOne.innerHTML = `${celsiusTemperature}°`;
-	tempElementTwo.innerHTML = `Feels like ${celsiusTemperature}°`;
-	metricButton.classList.add("active");
-	imperialButton.classList.remove("active");
-}
-let celsiusTemperature = null;
 
 let searchForm = document.querySelector(".searchEngine");
 searchForm.addEventListener("submit", handleSubmit);
@@ -267,11 +262,5 @@ searchForm.addEventListener("submit", handleSubmit);
 let currentLocationButton = document.querySelector("#current-location-icon");
 currentLocationButton.addEventListener("click", getGeolocation);
 
-let metricButton = document.querySelector("#celsius");
-metricButton.addEventListener("click", convertToMetricTemp);
-
-let imperialButton = document.querySelector("#fahrenheit");
-imperialButton.addEventListener("click", convertToImperialTemp);
-
 formattedTime();
-searchCity("London");
+searchCity("Moscow");
