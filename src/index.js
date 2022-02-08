@@ -209,6 +209,11 @@ function displayWeatherConditions(response) {
 	let todaySunrise = document.querySelector("#sunrise-text");
 	let todaySunset = document.querySelector("#sunset-text");
 	let todayPressure = document.querySelector("#today-pressure-text");
+	let todayTempMin = document.querySelector("#temp-min");
+	let todayTempMax = document.querySelector("#temp-max");;
+	todayTempMin.innerHTML = `${Math.round(response.data.main.temp_min *10 )/10}° / `;
+	todayTempMax.innerHTML = `${Math.round(response.data.main.temp_max*10)/10}° C`;
+console.log(response.data);
 	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round(
 		(response.data.main.feels_like * 10) / 10
 	)}°`;
