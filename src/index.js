@@ -91,7 +91,6 @@ function formattedLocalTime(timestamp) {
 	return `${currentLocalDay} ${currentLocalHour}:${currentLocalMinutes}`;
 }
 function displayUvi(response) {
-	console.log(response);
 	let uvi = response.data.currently[8].uvi;
 	let nowUv = document.querySelector("#now-solar-radiation-text");
 	if (uvi < 3) {
@@ -164,7 +163,6 @@ function getForecast(coordinates) {
 	console.log(coordinates);
 	let apiKey = `d023e1b756c64bfbbe242c0aadeadce3`;
 	let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
-	console.log(apiUrl);
 	axios.get(apiUrl).then(displayForecast);
 }
 
@@ -213,10 +211,7 @@ function displayWeatherConditions(response) {
 	let todayTempMax = document.querySelector("#temp-max");;
 	todayTempMin.innerHTML = `${Math.round(response.data.main.temp_min *10 )/10}° / `;
 	todayTempMax.innerHTML = `${Math.round(response.data.main.temp_max*10)/10}° C`;
-console.log(response.data);
-	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round(
-		(response.data.main.feels_like * 10) / 10
-	)}°`;
+	nowTempFeelsLikeElement.innerHTML = `Feels like ${Math.round((response.data.main.feels_like * 10) / 10)}° C`;
 	nowWindElement.innerHTML = `${Math.round(response.data.wind.speed)} m/s`;
 	nowHumidityElement.innerHTML = `${response.data.main.humidity} %`;
 	nowConditionsElement.innerHTML = `Currently: ${response.data.weather[0].description}`;
@@ -245,7 +240,6 @@ console.log(response.data);
 	displayRain(response);
 	getForecast(response.data.coord);
 	displayForecast(response);
-	console.log(response.data.currently);
 	displayUvi(response.data.currently);
 }
 
@@ -268,4 +262,4 @@ let currentLocationButton = document.querySelector("#current-location-icon");
 currentLocationButton.addEventListener("click", getGeolocation);
 
 formattedTime();
-searchCity("Moscow");
+searchCity("Kirkenes");
